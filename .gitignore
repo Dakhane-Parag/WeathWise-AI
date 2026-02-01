@@ -15,8 +15,6 @@ client/build/
 
 # Backend derived data
 server/data/processed/
-server/embeddings/faiss.index
-server/embeddings/metadata.json
 server/vectorstore/
 
 # Logs
