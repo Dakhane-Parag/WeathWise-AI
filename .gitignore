@@ -1,12 +1,14 @@
 # =========================
-# Global
+# Global env files
 # =========================
 .env
 .env.local
 .env.*.local
 
+# =========================
 # Logs
-logs
+# =========================
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -21,19 +23,19 @@ npm-cache/
 .pnpm-store/
 
 # =========================
-# Frontend (React)
+# Frontend (React - client)
 # =========================
-frontend/dist/
-frontend/build/
-frontend/.vite/
-frontend/.cache/
+client/dist/
+client/build/
+client/.vite/
+client/.cache/
 
 # =========================
-# Backend (AI / RAG)
+# Backend (AI / RAG - server)
 # =========================
-backend/vectorstore/
-backend/data/processed/
-backend/tmp/
+server/data/processed/      # chunks.json, embeddings metadata
+server/vectorstore/         # FAISS / Chroma local DB
+server/tmp/                 # temp files, uploads, cache
 
 # =========================
 # OS / Editor
