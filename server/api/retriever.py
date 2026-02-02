@@ -12,31 +12,35 @@ class Retriever:
         and return top-k relevant chunks with metadata.
         """
 
-        # 1️⃣ Embed query
+        #Embed query
         query_embedding = self.embedding_model.encode(
             query,
             convert_to_numpy=True,
             normalize_embeddings=True
         ).astype("float32")
 
-        # 2️⃣ FAISS search
+        #FAISS search
         distances, indices = self.faiss_index.search(
             np.array([query_embedding]),
             top_k
         )
 
-        # 3️⃣ Collect results
+        #Collect results
         results = []
         for idx, score in zip(indices[0], distances[0]):
             if idx == -1:
                 continue
 
             chunk = self.metadata[idx]
+            meta = chunk.get("metadata", {})
+
             results.append({
-                "text": chunk["text"],
-                "pdf": chunk.get("pdf_name"),
-                "page": chunk.get("page"),
+                "id": chunk.get("id"),
+                "text": chunk.get("text"),
+                "pdf": meta.get("pdf"),
+                "page": meta.get("page"),
                 "score": float(score)
             })
+
 
         return results
