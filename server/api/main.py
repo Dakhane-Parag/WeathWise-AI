@@ -5,7 +5,8 @@ import json
 import faiss
 from pathlib import Path
 from sentence_transformers import SentenceTransformer
-
+import os
+from generator import GeminiGenerator
 from retriever import Retriever
 
 logging.basicConfig(level=logging.INFO)
@@ -21,6 +22,7 @@ embedding_model = None
 faiss_index = None
 metadata = None
 retriever = None
+generator = None
 
 
 class QueryRequest(BaseModel):
@@ -30,7 +32,7 @@ class QueryRequest(BaseModel):
 
 @app.on_event("startup")
 def startup_event():
-    global embedding_model, faiss_index, metadata, retriever
+    global embedding_model, faiss_index, metadata, retriever, generator
 
     logger.info("Starting Semantic Search Backend...")
 
@@ -68,6 +70,15 @@ def startup_event():
     )
     logger.info("Retriever initialized.")
 
+    #API key setup
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY not set")
+
+    generator = GeminiGenerator(api_key=api_key)
+    logger.info("Gemini generator initialized.")
+
+
     logger.info("Startup complete. Application is ready.")
 
 
@@ -84,17 +95,20 @@ def health_check():
 
 @app.post("/query")
 def query_docs(request: QueryRequest):
-    """
-    Retrieval-only endpoint.
-    Returns top-K semantically relevant chunks.
-    """
-    results = retriever.retrieve(
+    retrieved_chunks = retriever.retrieve(
         query=request.query,
         top_k=request.top_k
     )
 
+    generation = generator.generate_answer(
+        query=request.query,
+        retrieved_chunks=retrieved_chunks
+    )
+
     return {
         "query": request.query,
-        "top_k": request.top_k,
-        "results": results
+        "answer": generation["answer"],
+        "citations": generation["citations"],
+        "sources": retrieved_chunks
     }
+

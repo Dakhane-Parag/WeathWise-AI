@@ -1,3 +1,5 @@
 fastapi
 uvicorn
 sentence_transformers
+faiss-cpu
+google-generativeai
