@@ -7,8 +7,8 @@ from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
 from sentence_transformers import SentenceTransformer
 import os
-from generator import GeminiGenerator
-from retriever import Retriever
+from api.generator import GeminiGenerator
+from api.retriever import Retriever
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
