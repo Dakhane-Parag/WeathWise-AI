@@ -4,6 +4,7 @@ import logging
 import json
 import faiss
 from pathlib import Path
+from fastapi.middleware.cors import CORSMiddleware
 from sentence_transformers import SentenceTransformer
 import os
 from generator import GeminiGenerator
@@ -16,6 +17,15 @@ app = FastAPI(
     title="AI-Powered Semantic Search Backend",
     version="0.1.0"
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Globals initialized at startup
 embedding_model = None
