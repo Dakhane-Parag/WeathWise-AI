@@ -8,8 +8,8 @@ import { chunkText } from "./textChunker.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PDF_DIR = path.join(__dirname, "../data/pdfs");
-const OUTPUT_DIR = path.join(__dirname, "../data/processed");
+const PDF_DIR = path.join(__dirname, "../server/data/pdfs");
+const OUTPUT_DIR = path.join(__dirname, "../server/data/processed");
 
 async function processAllPDFs() {
   await fs.ensureDir(OUTPUT_DIR);
