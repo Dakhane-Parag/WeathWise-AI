@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Search, TrendingUp, DollarSign, LineChart } from "lucide-react";
+import ColdStartNote from "./ColdStartNote";
+
 
 export default function SearchBar({ onSearch, loading }) {
   const [query, setQuery] = useState("");
@@ -27,6 +29,9 @@ export default function SearchBar({ onSearch, loading }) {
         <p className="text-zinc-500 text-lg max-w-2xl mx-auto">
           A Semantic Search Agent for Personal Finance Knowledge
         </p>
+        <ColdStartNote/>
+        
+
       </div>
 
       {/* ── Search form ── */}
